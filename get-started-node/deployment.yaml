@@ -1,0 +1,35 @@
+## Enter your <docker_username> before use
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: get-started-node
+  labels:
+    app: get-started-node
+spec:
+  type: NodePort
+  ports:
+  - port: 3000
+    name: http
+    nodePort: 30080
+  selector:
+    app: app
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: get-started-node
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+      - name: get-started-node
+        image: docker.io/<docker_username>/get-started-node:v1.0.0 
+        ports:
+        - containerPort: 3000
+      imagePullSecrets:
+      - name: regcred 
